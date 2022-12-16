@@ -47,7 +47,7 @@ func (controller *JobController) Route(api *fiber.Group) {
 func (c *JobController) List(ctx *fiber.Ctx) error {
 	params := &model.JobFilter{}
 	err := ctx.QueryParser(params)
-	fmt.Println(params)
+
 	exception.PanicWhenError(err)
 
 	responses := c.Service.List(params)

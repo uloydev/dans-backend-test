@@ -42,7 +42,7 @@ func (repo *JobRepository) FindAll(filter *model.JobFilter) (jobs *[]model.JobRe
 		query["location"] = filter.Location
 	}
 
-	fmt.Println(query)
+
 	resp, err := repo.HTTPClient.R().
 		SetQueryParams(query).
 		SetHeader("Accept", "application/json").
