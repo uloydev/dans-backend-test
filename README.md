@@ -8,6 +8,7 @@
     - swaggo
     - ozzo-validation
     - godotenv
+    - resty
 ## How To Run
 
 ### copy .env.example to .env and edit your .env config
