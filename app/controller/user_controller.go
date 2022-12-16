@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"dans-backend-test/app/middleware"
 	"dans-backend-test/app/model"
 	"dans-backend-test/app/repository"
 	"dans-backend-test/app/service"
@@ -29,20 +28,9 @@ func InitializeUserController(api *fiber.Group, DB *gorm.DB, HTTPClient *resty.C
 }
 
 func (c *UserController) Route(api *fiber.Group) {
-	api.Get("/test", func(ctx *fiber.Ctx) error {
-		return ctx.JSON(model.WebResponse{
-			Status: "Success",
-			Code:   200,
-		})
-	})
 	api.Post("/user", c.Create)
 	api.Post("/user/auth", c.GetNewAccessToken)
-	api.Get("/test-jwt", middleware.JWTProtected(), func(ctx *fiber.Ctx) error {
-		return ctx.JSON(model.WebResponse{
-			Status: "Success",
-			Code:   200,
-		})
-	})
+
 }
 
 // CreateUser is a function to insert user to database

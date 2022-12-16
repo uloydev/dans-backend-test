@@ -26,6 +26,7 @@ func main() {
 	conf := config.New()
 	dbConn := db.NewGormConnection(conf)
 	HTTPClient := resty.New()
+	// HTTPClient.SetDebug(true)
 
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())

@@ -11,22 +11,22 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {
-            "name": "Toqcer",
-            "email": "Toqcer.gmail.com"
+            "name": "wahyu miftahul aflah",
+            "email": "wahyumiftahul7@gmail.com"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/admin": {
+        "/job/": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "get all Admin data from database",
+                "description": "get Job data by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,95 +34,16 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "job"
                 ],
-                "summary": "Get All Admin",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.AdminResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Create New Admin / Register Admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Create Admin",
+                "summary": "Get Job by id",
                 "parameters": [
                     {
-                        "description": "Register Admin",
-                        "name": "admin",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.AdminRequest"
-                        }
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -137,7 +58,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AdminResponse"
+                                            "$ref": "#/definitions/model.JobResponse"
                                         }
                                     }
                                 }
@@ -146,6 +67,24 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.WebResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "allOf": [
                                 {
@@ -183,9 +122,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/admin/auth": {
-            "post": {
-                "description": "authenticate admin / login admin",
+        "/v1/job": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get all Job Data",
                 "consumes": [
                     "application/json"
                 ],
@@ -193,20 +137,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "job"
                 ],
-                "summary": "Auth Admin",
-                "parameters": [
-                    {
-                        "description": "Auth admin",
-                        "name": "auth",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.AuthRequest"
-                        }
-                    }
-                ],
+                "summary": "Get All Job",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -219,7 +152,10 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/model.AuthResponse"
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.JobResponse"
+                                            }
                                         }
                                     }
                                 }
@@ -266,83 +202,6 @@ const docTemplate = `{
             }
         },
         "/v1/user": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "get all user data from database",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get All User",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.UserResponse"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "Create New User / Register User",
                 "consumes": [
@@ -505,217 +364,104 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/v1/user/reset-password": {
-            "post": {
-                "description": "request reset password user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Request Reset Password User",
-                "parameters": [
-                    {
-                        "description": "Request Reset Password User",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ResetPasswordRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/model.WebResponse"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
-        "model.AdminRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "admin@toqcer.id"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "admin"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "strongpassword"
-                }
-            }
-        },
-        "model.AdminResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "integer"
-                },
-                "deleted_at": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "integer"
-                }
-            }
-        },
         "model.AuthRequest": {
             "type": "object",
             "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
-                },
                 "password": {
                     "type": "string",
                     "example": "strongpassword"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "wahyu"
                 }
             }
         },
         "model.AuthResponse": {
             "type": "object",
             "properties": {
-                "email": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
                 "password": {
                     "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
-        "model.ResetPasswordRequest": {
+        "model.JobResponse": {
             "type": "object",
             "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
+                "company": {
+                    "type": "string"
+                },
+                "company_logo": {
+                    "type": "string"
+                },
+                "company_url": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "how_to_apply": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         },
         "model.UserRequest": {
             "type": "object",
             "properties": {
-                "birthday": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "user@toqcer.id"
-                },
-                "name": {
-                    "type": "string",
-                    "example": "toqcer"
-                },
                 "password": {
                     "type": "string",
                     "example": "strongpassword"
                 },
-                "phone": {
+                "username": {
                     "type": "string",
-                    "example": "08512132332"
+                    "example": "wahyu"
                 }
             }
         },
         "model.UserResponse": {
             "type": "object",
             "properties": {
-                "birthday": {
-                    "type": "integer"
-                },
                 "created_at": {
                     "type": "integer"
                 },
                 "deleted_at": {
                     "type": "integer"
                 },
-                "email": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
                 "updated_at": {
                     "type": "integer"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -725,9 +471,7 @@ const docTemplate = `{
                 "code": {
                     "type": "integer"
                 },
-                "data": {
-                    "type": "any"
-                },
+                "data": {},
                 "status": {
                     "type": "string"
                 }
@@ -749,8 +493,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "SMS API",
-	Description:      "sms api is api for store management system web app by ToqCer.id.",
+	Title:            "Dans Backnd test",
+	Description:      "Dans Backnd test",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

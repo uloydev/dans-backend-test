@@ -15,8 +15,8 @@ func NewJobService(repo *repository.JobRepository) BaseService[model.JobResponse
 	}
 }
 
-func (service *JobService) List() (responses *[]model.JobResponse) {
-	responses = service.Repo.FindAll()
+func (service *JobService) List(filter *model.JobFilter) (responses *[]model.JobResponse) {
+	responses = service.Repo.FindAll(filter)
 	return responses
 }
 

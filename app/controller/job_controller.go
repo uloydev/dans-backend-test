@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"dans-backend-test/app/middleware"
 	"dans-backend-test/app/model"
 	"dans-backend-test/app/repository"
 	"dans-backend-test/app/service"
+	"dans-backend-test/exception"
+	"fmt"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
@@ -26,8 +29,8 @@ func InitializeJobController(api *fiber.Group, DB *gorm.DB, HTTPClient *resty.Cl
 }
 
 func (controller *JobController) Route(api *fiber.Group) {
-	api.Get("/job", controller.List)
-	api.Get("/job/:id", controller.FindById)
+	api.Get("/job", middleware.JWTProtected(), controller.List)
+	api.Get("/job/:id", middleware.JWTProtected(), controller.FindById)
 }
 
 // GetJobList is a function to get all job data
@@ -42,7 +45,12 @@ func (controller *JobController) Route(api *fiber.Group) {
 // @Failure      400   {object}  model.WebResponse{data=string}
 // @Router       /v1/job [get]
 func (c *JobController) List(ctx *fiber.Ctx) error {
-	responses := c.Service.List()
+	params := &model.JobFilter{}
+	err := ctx.QueryParser(params)
+	fmt.Println(params)
+	exception.PanicWhenError(err)
+
+	responses := c.Service.List(params)
 
 	return ctx.JSON(model.WebResponse{
 		Code:   200,
@@ -51,17 +59,19 @@ func (c *JobController) List(ctx *fiber.Ctx) error {
 	})
 }
 
-// GeTodo is a function to get Todo data by id from database
-// @Summary      Get Todo by id
-// @Description  get Todo data by id from database
-// @Tags         todo-items
+// GeJob is a function to get Job data by id
+// @Security ApiKeyAuth
+// @Summary      Get Job by id
+// @Description  get Job data by id
+// @Tags         job
 // @Accept       json
 // @Produce      json
-// @Param id path int false "int valid" mininum(1)
-// @Success      200   {object}  model.WebResponse{data=model.TodoResponse}
+// @Param id path string true "id"
+// @Success      200   {object}  model.WebResponse{data=model.JobResponse}
 // @Failure      500   {object}  model.WebResponse{data=string}
 // @Failure      400   {object}  model.WebResponse{data=string}
-// @Router       /todo-items/ [get]
+// @Failure      404   {object}  model.WebResponse{data=string}
+// @Router       /v1/job/ [get]
 func (c *JobController) FindById(ctx *fiber.Ctx) error {
 
 	ID := ctx.Params("id")

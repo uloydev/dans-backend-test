@@ -1,5 +1,12 @@
 package model
 
+type JobFilter struct {
+	FullTime    string `query:"full_time"`
+	Description string `query:"description"`
+	Location    string `query:"location"`
+	Page        string `query:"page"`
+}
+
 type JobResponse struct {
 	ID          string `json:"id"`
 	CreatedAt   string `json:"created_at"`

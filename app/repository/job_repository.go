@@ -5,6 +5,7 @@ import (
 	"dans-backend-test/app/model"
 	"dans-backend-test/exception"
 	"errors"
+	"fmt"
 
 	"github.com/go-resty/resty/v2"
 	"gorm.io/gorm"
@@ -22,13 +23,28 @@ func NewJobRepository(db *gorm.DB, HTTPClient *resty.Client) BaseRepository[enti
 	}
 }
 
-func (repo *JobRepository) FindAll() (jobs *[]model.JobResponse) {
+func (repo *JobRepository) FindAll(filter *model.JobFilter) (jobs *[]model.JobResponse) {
+	query := map[string]string{}
+
+	if filter.Page != "" {
+		query["page"] = filter.Page
+	}
+
+	if filter.FullTime != "" {
+		query["full_time"] = filter.FullTime
+	}
+
+	if filter.Description != "" {
+		query["description"] = filter.Description
+	}
+
+	if filter.Location != "" {
+		query["location"] = filter.Location
+	}
+
+	fmt.Println(query)
 	resp, err := repo.HTTPClient.R().
-		//   SetQueryParams(map[string]string{
-		//       "page_no": "1",
-		//       "limit": "20",
-		//       "sort":"name",
-		//   }).
+		SetQueryParams(query).
 		SetHeader("Accept", "application/json").
 		SetResult(&[]model.JobResponse{}).
 		Get("http://dev3.dansmultipro.co.id/api/recruitment/positions.json")
@@ -42,11 +58,6 @@ func (repo *JobRepository) FindAll() (jobs *[]model.JobResponse) {
 
 func (repo *JobRepository) FindById(ID string) (job *model.JobResponse) {
 	resp, err := repo.HTTPClient.R().
-		//   SetQueryParams(map[string]string{
-		//       "page_no": "1",
-		//       "limit": "20",
-		//       "sort":"name",
-		//   }).
 		SetHeader("Accept", "application/json").
 		SetResult(&model.JobResponse{}).
 		Get("http://dev3.dansmultipro.co.id/api/recruitment/positions/" + ID)

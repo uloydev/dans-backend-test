@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/gofiber/fiber/v2 v2.33.0
 	github.com/gofiber/jwt/v2 v2.2.7
 	github.com/gofiber/swagger v0.0.1
@@ -18,19 +19,12 @@ require (
 )
 
 require (
-	github.com/go-resty/resty/v2 v2.7.0 // indirect
-	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
-)
-
-require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/go-gomail/gomail v0.0.0-20160411212932-81ebce5c23df
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
