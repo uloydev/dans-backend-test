@@ -7,6 +7,7 @@ import (
 
 	_ "dans-backend-test/docs"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/swagger"
@@ -24,13 +25,14 @@ import (
 func main() {
 	conf := config.New()
 	dbConn := db.NewGormConnection(conf)
+	HTTPClient := resty.New()
 
 	app := fiber.New(config.NewFiberConfig())
 	app.Use(recover.New())
 
 	v1 := app.Group("/v1")
 
-	initialize.RunInitFunctions(v1.(*fiber.Group), dbConn)
+	initialize.RunInitFunctions(v1.(*fiber.Group), dbConn, HTTPClient)
 
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 

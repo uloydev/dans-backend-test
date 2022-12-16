@@ -8,6 +8,14 @@ func PanicWhenError(err error) {
 	}
 }
 
+func NotFoundWhenError(err error) {
+	if err != nil {
+		panic(NotFoundError{
+			Message: err.Error(),
+		})
+	}
+}
+
 func PanicWhenEnvNil(key string, env interface{}) {
 	if env == nil || env == "" {
 		panic(fmt.Sprintf("ENV %s cannot be empty", key))

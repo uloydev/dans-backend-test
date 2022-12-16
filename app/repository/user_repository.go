@@ -4,16 +4,19 @@ import (
 	"dans-backend-test/app/entity"
 	"dans-backend-test/exception"
 
+	"github.com/go-resty/resty/v2"
 	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	DB *gorm.DB
+	DB         *gorm.DB
+	HTTPClient *resty.Client
 }
 
-func NewUserRepository(db *gorm.DB) BaseRepository[entity.User] {
+func NewUserRepository(db *gorm.DB, HTTPClient *resty.Client) BaseRepository[entity.User] {
 	return &UserRepository{
-		DB: db,
+		DB:         db,
+		HTTPClient: HTTPClient,
 	}
 }
 

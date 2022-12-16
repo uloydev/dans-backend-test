@@ -6,5 +6,5 @@ import (
 
 var InitFunctions = []InitFunc{
 	controller.InitializeUserController,
-	// controller.InitializeAdminController,
+	controller.InitializeJobController,
 }

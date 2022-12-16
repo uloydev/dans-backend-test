@@ -8,11 +8,18 @@ import (
 
 func ErrorHandler(ctx *fiber.Ctx, err error) error {
 
-	_, ok := err.(ValidationError)
-	if ok {
+	if _, ok := err.(ValidationError); ok {
 		return ctx.JSON(model.WebResponse{
 			Code:   400,
 			Status: "BAD_REQUEST",
+			Data:   err.Error(),
+		})
+	}
+
+	if _, ok := err.(NotFoundError); ok {
+		return ctx.JSON(model.WebResponse{
+			Code:   404,
+			Status: "NOT_FOUND",
 			Data:   err.Error(),
 		})
 	}
