@@ -5,7 +5,6 @@ import (
 	"dans-backend-test/app/model"
 	"dans-backend-test/exception"
 	"errors"
-	"fmt"
 
 	"github.com/go-resty/resty/v2"
 	"gorm.io/gorm"
@@ -41,7 +40,6 @@ func (repo *JobRepository) FindAll(filter *model.JobFilter) (jobs *[]model.JobRe
 	if filter.Location != "" {
 		query["location"] = filter.Location
 	}
-
 
 	resp, err := repo.HTTPClient.R().
 		SetQueryParams(query).

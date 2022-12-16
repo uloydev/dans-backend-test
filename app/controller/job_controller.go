@@ -6,7 +6,6 @@ import (
 	"dans-backend-test/app/repository"
 	"dans-backend-test/app/service"
 	"dans-backend-test/exception"
-	"fmt"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
